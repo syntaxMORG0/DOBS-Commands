@@ -64,4 +64,4 @@ MIT
 
 ---
 
-Made by syntaxMORG0
+Made by [![Open in GitHub Codespaces](https://img.shields.io/static/v1?style=for-the-badge&label=SyntaxMORG0&message=Profile&color=lightgrey&logo=github)]
