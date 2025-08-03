@@ -2,6 +2,9 @@ import os
 import json
 from colorama import init, Fore, Style
 
+#Made by syntaxMORG0
+#please star my github repo
+
 init(autoreset=True)
 
 DATA_FILE = "dobs_data.json"
@@ -41,6 +44,15 @@ def handle_help():
     print("  LOAD     - Load data from file")
     print("  SET      - Set a key-value pair in data")
     print("  DEL      - Delete a key from data")
+    print("  KEYS     - List all keys in data")
+    print("  SHOW     - Show value for a key")
+    print("  LEN      - Show number of keys in data")
+    print("  ECHO     - Echo a message")
+    print("  UPDATE   - Update value for a key")
+    print("  EXPORT   - Export data to a file")
+    print("  IMPORT   - Import data from a file")
+    print("  COPY     - Copy a key to a new key")
+    print("  RENAME   - Rename a key")
 
 def handle_unknown(command):
     print(Fore.RED + f"ERROR: Unknown command '{command}'")
@@ -211,6 +223,78 @@ def handle_del(line_number, data):
         print(Fore.RED + f"{line_number}> ERROR: Key not found.")
     print(Fore.WHITE + Style.DIM + "𝑫𝑶𝑩𝑺" + Style.RESET_ALL)
 
+def handle_keys(line_number, data):
+    print(Fore.BLUE + f"{line_number}> Keys: {list(data.keys())}")
+    print(Fore.WHITE + Style.DIM + "𝑫𝑶𝑩𝑺" + Style.RESET_ALL)
+
+def handle_show(line_number, data):
+    key = input(f"{line_number} SHOW> Key: ")
+    if key in data:
+        print(Fore.BLUE + f"{line_number}> {key} = {data[key]}")
+    else:
+        print(Fore.RED + f"{line_number}> ERROR: Key not found.")
+    print(Fore.WHITE + Style.DIM + "𝑫𝑶𝑩𝑺" + Style.RESET_ALL)
+
+def handle_len(line_number, data):
+    print(Fore.BLUE + f"{line_number}> Data length: {len(data)}")
+    print(Fore.WHITE + Style.DIM + "𝑫𝑶𝑩𝑺" + Style.RESET_ALL)
+
+def handle_echo(line_number):
+    msg = input(f"{line_number} ECHO> Message: ")
+    print(Fore.BLUE + f"{line_number}> {msg}")
+    print(Fore.WHITE + Style.DIM + "𝑫𝑶𝑩𝑺" + Style.RESET_ALL)
+
+def handle_update(line_number, data):
+    key = input(f"{line_number} UPDATE> Key: ")
+    if key in data:
+        value = input(f"{line_number} UPDATE> New Value: ")
+        data[key] = value
+        print(Fore.BLUE + f"{line_number}> Data updated: {key} = {value}")
+    else:
+        print(Fore.RED + f"{line_number}> ERROR: Key not found.")
+    print(Fore.WHITE + Style.DIM + "𝑫𝑶𝑩𝑺" + Style.RESET_ALL)
+
+def handle_export(line_number, data):
+    filename = input(f"{line_number} EXPORT> Filename: ")
+    try:
+        with open(filename, "w") as f:
+            json.dump(data, f)
+        print(Fore.BLUE + f"{line_number}> Data exported to {filename}")
+    except Exception as e:
+        print(Fore.RED + f"{line_number}> ERROR: Could not export data. {e}")
+    print(Fore.WHITE + Style.DIM + "𝑫𝑶𝑩𝑺" + Style.RESET_ALL)
+
+def handle_import(line_number, data):
+    filename = input(f"{line_number} IMPORT> Filename: ")
+    try:
+        with open(filename, "r") as f:
+            imported = json.load(f)
+        data.update(imported)
+        print(Fore.BLUE + f"{line_number}> Data imported from {filename}")
+    except Exception as e:
+        print(Fore.RED + f"{line_number}> ERROR: Could not import data. {e}")
+    print(Fore.WHITE + Style.DIM + "𝑫𝑶𝑩𝑺" + Style.RESET_ALL)
+
+def handle_copy(line_number, data):
+    key = input(f"{line_number} COPY> Key: ")
+    new_key = input(f"{line_number} COPY> New Key: ")
+    if key in data:
+        data[new_key] = data[key]
+        print(Fore.BLUE + f"{line_number}> {key} copied to {new_key}")
+    else:
+        print(Fore.RED + f"{line_number}> ERROR: Key not found.")
+    print(Fore.WHITE + Style.DIM + "𝑫𝑶𝑩𝑺" + Style.RESET_ALL)
+
+def handle_rename(line_number, data):
+    key = input(f"{line_number} RENAME> Key: ")
+    new_key = input(f"{line_number} RENAME> New Key: ")
+    if key in data:
+        data[new_key] = data.pop(key)
+        print(Fore.BLUE + f"{line_number}> {key} renamed to {new_key}")
+    else:
+        print(Fore.RED + f"{line_number}> ERROR: Key not found.")
+    print(Fore.WHITE + Style.DIM + "𝑫𝑶𝑩𝑺" + Style.RESET_ALL)
+
 def looped():
     line_number = 1
     data = {}
@@ -260,6 +344,24 @@ def looped():
             handle_set(line_number, data)
         elif key_code == "DEL":
             handle_del(line_number, data)
+        elif key_code == "KEYS":
+            handle_keys(line_number, data)
+        elif key_code == "SHOW":
+            handle_show(line_number, data)
+        elif key_code == "LEN":
+            handle_len(line_number, data)
+        elif key_code == "ECHO":
+            handle_echo(line_number)
+        elif key_code == "UPDATE":
+            handle_update(line_number, data)
+        elif key_code == "EXPORT":
+            handle_export(line_number, data)
+        elif key_code == "IMPORT":
+            handle_import(line_number, data)
+        elif key_code == "COPY":
+            handle_copy(line_number, data)
+        elif key_code == "RENAME":
+            handle_rename(line_number, data)
         else:
             handle_unknown(key_code)
         line_number += 1
