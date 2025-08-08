@@ -1,4 +1,4 @@
-# 𝑫𝑶𝑩𝑺 kernel
+# 𝑫𝑶𝑩𝑺
 
 Don't worry Open IDE is not sunsetted im just on a sideproject
 
